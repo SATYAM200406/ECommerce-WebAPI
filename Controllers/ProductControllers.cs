@@ -19,9 +19,16 @@ namespace MySecondWebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery]QueryParameters queryParameters)
         {
-            return Ok(await _context.Products.ToArrayAsync());
+            IQueryable<Product> products = _context.Products;
+
+            //Implementing "Pagination" to skip and take pages
+
+            products = products.Skip((queryParameters.Page - 1) * queryParameters.Size)
+                .Take(queryParameters.Size);
+
+            return Ok(await products.ToArrayAsync());
         }
 
 
