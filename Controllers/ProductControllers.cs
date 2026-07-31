@@ -19,9 +19,26 @@ namespace MySecondWebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts([FromQuery]QueryParameters queryParameters)
+        public async Task<IActionResult> GetAllProducts([FromQuery]ProductQueryParameters queryParameters)
         {
             IQueryable<Product> products = _context.Products;
+
+            //Implementing Filter like MinPrice & MaxPrice
+
+            if (queryParameters.MinPrice != null)
+            {
+                products = products.Where(
+                    p => p.Price >= queryParameters.MinPrice.Value);
+            }
+            if (queryParameters.MaxPrice != null)
+            {
+                products = products.Where(
+                    p => p.Price <= queryParameters.MaxPrice.Value);
+            }
+
+
+
+
 
             //Implementing "Pagination" to skip and take pages
 
