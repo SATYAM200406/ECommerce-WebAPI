@@ -37,6 +37,23 @@ namespace MySecondWebApi.Controllers
             }
 
 
+            //Searching Using SKU and Name
+
+            if(!String.IsNullOrEmpty(queryParameters.Sku))
+            {
+                products = products.Where(
+                    p => p.SKU== queryParameters.Sku);
+            }
+
+            if (!String.IsNullOrEmpty(queryParameters.Name))
+            {
+
+                //Better to Use .Contains so it won't ask for exact keyword it will only check if anything with that key word present.
+                products = products.Where(
+                    p=>p.Name.ToLower().Contains(queryParameters.Name.ToLower())
+
+                    );
+            }
 
 
 
